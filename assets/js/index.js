@@ -1,6 +1,6 @@
 console.log("Entro index.js");
 
-document=addEventListener("DOMContentLoaded", function(){
+document=addEventListener("DOMContentLoaded", function(){ // que inicialice la aplicacion
     const saveBtn = document.getElementById("saveBtn")
     const changeThemeBtn = document.getElementById("changeThemeBtn")
     const inputName = document.getElementById("inputName")
@@ -8,9 +8,24 @@ document=addEventListener("DOMContentLoaded", function(){
     let tableBody = document.getElementById("tableBody")
 
     function loadData(){
+        let empleados = JSON.parse(localStorage.getItem("empleados")) || []; //la doble linea se define como 
+        empleados.forEach((empleado, index) => {
+            let tr = document.createElement("tr");
+            tr.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${empleado.name}</td>
+            <td>${empleado.puesto}</td>
+            <td class="text-center">
+              <button type="button" class="btn btn-warning btn-edit" data-index="${index}">Editar</button>
+              <button type="button" class="btn btn-danger btn-delete" data-index="${index}">Eliminar</button>
+            </td>
+            `;
+        tableBody.appendChild(tr);
+        });
     }
 
     saveBtn.addEventListener("click", ()=>{
+        loadData();
 
         const name= inputName.value;
         const puesto= inputPuesto.value;
@@ -23,7 +38,7 @@ document=addEventListener("DOMContentLoaded", function(){
         });
         localStorage.setItem("empleados",JSON.stringify(empleados));
     });
-    // que inicialice la aplicacion
+    loadData();
 });// Que se ejecute cuando el contenido este cargado es la direccion.
 
 
